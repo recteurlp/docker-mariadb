@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Init Volume Datadir
+if [ ! -d /var/lib/mysql/mysql ]; then
+	cp -r /data_bck/* /var/lib/mysql
+	chown -R mysql:mysql /var/lib/mysql
+fi
+
+# Start MariaDB Server
+/usr/bin/mysqld_safe

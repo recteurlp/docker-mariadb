@@ -1,0 +1,10 @@
+MariaDB:
+ image: recteurlp/mariadb
+ container_name: mariadb
+ restart: always
+ ports:
+ - "3306:3306"
+
+# Volume for persistance Database
+# Will be init if empty 
+# - /opt/mariadb:/var/lib/mysql
