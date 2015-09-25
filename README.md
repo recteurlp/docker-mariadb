@@ -39,7 +39,7 @@ mysql -u root -pchangeme
 Over the net via git -
 
 ```bash
-docker build --rm -t recteurlp/mariadb https://github.com/recteurlp/docker-mariadb
+docker build --rm -t recteurlp/mariadb https://github.com/recteurlp/docker-mariadb.git
 ```
 
 or
