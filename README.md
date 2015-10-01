@@ -22,6 +22,12 @@ EOF
 docker-compose up -d
 ```
 
+If SELinux is enabled :
+
+```bash
+chcon -Rt svirt_sandbox_file_t /opt/mariadb
+```
+
 Then you can test it :
 
 ```bash
