@@ -7,7 +7,6 @@ Tested on Docker 1.8.1
 
 ## To run with docker-compose :
 
-
 ```bash
 cat >> docker-compose.yml <<EOF
 MariaDB:
@@ -15,17 +14,28 @@ MariaDB:
  container_name: mariadb
  ports:
  - "3306:3306"
- volumes:
- - /opt/mariadb:/var/lib/mysql
 EOF
-
-docker-compose up -d
 ```
 
-If SELinux is enabled :
+### Persistant Data and Extra Config Files
 
 ```bash
-chcon -Rt svirt_sandbox_file_t /opt/mariadb
+cat >> docker-compose.yml <<EOF
+ volumes:
+ - /var/lib/mysql:/var/lib/mysql
+ - /etc/my.cnf.d/:/etc/my.cnf.d/
+```
+
+### SELinux
+
+```bash
+chcon -Rt svirt_sandbox_file_t /var/lib/mysql
+```
+
+### Start
+
+```bash
+docker-compose up -d
 ```
 
 Then you can test it :
@@ -53,7 +63,7 @@ or
 Copy the sources down -
 
 ```bash
-git clone https://github.com/recteurlp/docker-mariadb
+git clone https://github.com/recteurlp/docker-mariadb.git
 cd docker-mariadb
 make
 ```
