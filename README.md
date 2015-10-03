@@ -3,65 +3,62 @@ recteurlp/mariadb
 
 Fedora 22 dockerfile for MariaDB
 
-Tested on Docker 1.8.1
+**The container set a root password on each start**
 
-## To run with docker-compose :
+# QuickStart
+
+## Ephemeral
+
+```bash
+docker run -d \
+ -e MYSQL_DATABASE=db \
+ -e MYSQL_USER=user \
+ -e MYSQL_PASSWORD=password \
+ -t recteurlp/mariadb
+```
+
+if MYSQL_ROOT_PASSWORD is not set the container auto-generate and print a root password into the startup log
+
+## Extended Docker Compose
 
 ```bash
 cat >> docker-compose.yml <<EOF
 MariaDB:
  image: recteurlp/mariadb
- container_name: mariadb
  ports:
- - "3306:3306"
-EOF
-```
-
-### Persistant Data and Extra Config Files
-
-```bash
-cat >> docker-compose.yml <<EOF
+  - "3306:3306"
+ environment:
+  - MYSQL_ROOT_PASSWORD: changeme
+  - MYSQL_DATABASE: db
+  - MYSQL_USER: user
+  - MYSQL_PASSWORD: password
  volumes:
- - /var/lib/mysql:/var/lib/mysql
- - /etc/my.cnf.d/:/etc/my.cnf.d/
+  - /var/lib/mysql
+  - /etc/my.cnf.d
 EOF
 ```
 
-### SELinux
+## SELinux
 
 ```bash
 chcon -Rt svirt_sandbox_file_t /var/lib/mysql
 ```
 
-### Start
+## Client
 
 ```bash
-docker-compose up -d
+docker run -i --rm --volumes-from=mariadb -t recteurlp/mariadb mysql -u root -p
 ```
 
-Then you can test it :
+# Build
 
-```bash
- docker run -i --rm --volumes-from=mariadb -t recteurlp/mariadb mysql -u root -pchangeme
-```
-
-or if you have a MySQL Client
-
-```bash
-mysql -u root -pchangeme
-```
-
-## To build:
-
-Over the net via git -
+### Fresh Build
 
 ```bash
 docker build --rm -t recteurlp/mariadb https://github.com/recteurlp/docker-mariadb.git
 ```
 
-or
-
-Copy the sources down -
+### To Edit
 
 ```bash
 git clone https://github.com/recteurlp/docker-mariadb.git

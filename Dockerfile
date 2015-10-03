@@ -1,14 +1,15 @@
 FROM fedora:22
 MAINTAINER recteurlp recteurlp@gmail.com
 
-ADD .docker/my.cnf /etc/my.cnf
-ADD .docker/start /start
-ADD .docker/setup/install /mysql/setup/install
-
-RUN dnf install -y logrotate hostname mariadb mariadb-server && dnf clean all && \
-/bin/bash /mysql/setup/install
+COPY .docker/docker.cnf /etc/my.cnf.d/docker.cnf
+COPY .docker/install /install
 
 ENV TERM xterm
+
+RUN dnf update -y && dnf install -y pwgen logrotate hostname mariadb mariadb-server && dnf clean all && \
+/bin/bash /install
+
+COPY .docker/start /start
 
 EXPOSE 3306
 

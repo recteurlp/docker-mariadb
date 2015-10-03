@@ -2,9 +2,59 @@
 
 # Init Volume Datadir
 if [ ! -d /var/lib/mysql/mysql ]; then
+	echo -ne "Populating DataDir ... "
 	cp -r /init_datadir/* /var/lib/mysql
 	chown -R mysql:mysql /var/lib/mysql
+	echo "Done"
 fi
 
-# Start MariaDB Server
+if [ ! "$(ls -A /etc/my.cnf.d/)" ]; then
+        echo -ne "Populating ConfDir ... "
+	ls -l /etc/my.cnf.d/
+        cp -r /init_confdir/* /etc/my.cnf.d
+        chown -R mysql:mysql /etc/my.cnf.d
+	echo "Done"
+fi
+
+if [[ -z ${MYSQL_ROOT_PASSWORD} ]]; then
+
+	MYSQL_ROOT_PASSWORD=$(pwgen -s -1 12)
+	echo "Your Root password is : ${MYSQL_ROOT_PASSWORD}"
+
+fi
+
+echo -ne "Initialize Root password ... "
+/usr/bin/mysqld_safe --log-error=/tmp/init.log --skip-networking --skip-grant-tables &> /dev/null &
+sleep 2
+echo -e "\n\n${MYSQL_ROOT_PASSWORD}\n${MYSQL_ROOT_PASSWORD}\n\n\nn\n\n\n" | mysql_secure_installation &> /dev/null
+echo "Done"
+
+if [[ -n ${MYSQL_DATABASE} ]]; then
+
+	echo -ne "Creating ${MYSQL_DATABASE} Database ... "
+	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
+	echo "Done"
+fi
+
+if [[ -n ${MYSQL_USER} && -n ${MYSQL_PASSWORD} ]]; then
+
+	if [[ -n ${MYSQL_DATABASE} ]]; then
+		echo -ne "GRANT PRIVILEGES on ${MYSQL_DATABASE} to ${MYSQL_USER} ... "
+		SQL="GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* to ${MYSQL_USER}@'%' identified by '${MYSQL_USER}';"
+	else
+		echo -ne "Creating ${MYSQL_USER} User and Database ... "
+		SQL="CREATE DATABASE IF NOT EXISTS ${MYSQL_USER}; GRANT ALL PRIVILEGES ON ${MYSQL_USER}.* to ${MYSQL_USER}@'%' identified by '${MYSQL_USER}';"
+	fi
+
+	
+	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "$SQL FLUSH PRIVILEGES;"
+	echo "Done"
+
+fi
+
+/usr/bin/mysqladmin -u root --password=${MYSQL_ROOT_PASSWORD} shutdown
+sleep 2
+history -c
+echo "Starintg MariaDB ..."
+tail -f /var/log/mariadb/mariadb.log &
 /usr/bin/mysqld_safe
