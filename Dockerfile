@@ -6,7 +6,7 @@ COPY .docker/install /install
 
 ENV TERM xterm
 
-RUN dnf update -y && dnf install -y pwgen logrotate hostname mariadb mariadb-server && dnf clean all && \
+RUN dnf install -y pwgen logrotate hostname mariadb mariadb-server && dnf clean all && \
 /bin/bash /install
 
 COPY .docker/start /start
