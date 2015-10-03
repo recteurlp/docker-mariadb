@@ -28,10 +28,10 @@ MariaDB:
  ports:
   - "3306:3306"
  environment:
-  - MYSQL_ROOT_PASSWORD: changeme
-  - MYSQL_DATABASE: db
-  - MYSQL_USER: user
-  - MYSQL_PASSWORD: password
+  MYSQL_ROOT_PASSWORD: changeme
+  MYSQL_DATABASE: db
+  MYSQL_USER: user
+  MYSQL_PASSWORD: password
  volumes:
   - /var/lib/mysql
   - /etc/my.cnf.d
