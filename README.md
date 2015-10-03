@@ -24,6 +24,7 @@ cat >> docker-compose.yml <<EOF
  volumes:
  - /var/lib/mysql:/var/lib/mysql
  - /etc/my.cnf.d/:/etc/my.cnf.d/
+EOF
 ```
 
 ### SELinux
