@@ -1,7 +1,7 @@
 recteurlp/mariadb
 =================
 
-Fedora 22 dockerfile for MariaDB
+Fedora dockerfile for MariaDB
 
 **The container set a root password on each start**
 
