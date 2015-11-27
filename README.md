@@ -1,7 +1,7 @@
 recteurlp/mariadb
 =================
 
-Fedora 22 dockerfile for MariaDB
+Fedora dockerfile for MariaDB
 
 **The container set a root password on each start**
 
@@ -32,6 +32,13 @@ MariaDB:
   MYSQL_DATABASE: db
   MYSQL_USER: user
   MYSQL_PASSWORD: password
+EOF
+```
+
+## Adding Volumes
+
+```bash
+cat >> docker-compose.yml <<EOF
  volumes:
   - /var/lib/mysql
   - /etc/my.cnf.d
