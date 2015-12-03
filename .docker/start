@@ -36,12 +36,14 @@ fi
 
 if [[ -n ${MYSQL_USER} && -n ${MYSQL_PASSWORD} ]]; then
 
+    MYSQL_USER_HOST=${MYSQL_USER_HOST:-%}
+
 	if [[ -n ${MYSQL_DATABASE} ]]; then
-		echo -ne "GRANT PRIVILEGES on ${MYSQL_DATABASE} to ${MYSQL_USER} ... "
-		SQL="GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* to ${MYSQL_USER}@'%' identified by '${MYSQL_PASSWORD}';"
+		echo -ne "GRANT PRIVILEGES on ${MYSQL_DATABASE} to ${MYSQL_USER}@${MYSQL_USER_HOST} ... "
+		SQL="GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* to ${MYSQL_USER}@'${MYSQL_USER_HOST}' identified by '${MYSQL_PASSWORD}';"
 	else
-		echo -ne "Creating ${MYSQL_USER} User and Database ... "
-		SQL="CREATE DATABASE IF NOT EXISTS ${MYSQL_USER}; GRANT ALL PRIVILEGES ON ${MYSQL_USER}.* to ${MYSQL_USER}@'%' identified by '${MYSQL_PASSWORD}';"
+		echo -ne "Creating ${MYSQL_USER} Database with grant to ${MYSQL_USER}@${MYSQL_USER_HOST} ... "
+		SQL="CREATE DATABASE IF NOT EXISTS ${MYSQL_USER}; GRANT ALL PRIVILEGES ON ${MYSQL_USER}.* to ${MYSQL_USER}@'${MYSQL_USER_HOST}' identified by '${MYSQL_PASSWORD}';"
 	fi
 
 	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "$SQL FLUSH PRIVILEGES;"
