@@ -1,5 +1,5 @@
-recteurlp/mariadb
-=================
+recteurlp/mariadb:10.1.14-1
+===========================
 
 Fedora dockerfile for MariaDB
 
@@ -23,7 +23,7 @@ if MYSQL_ROOT_PASSWORD is not set the container auto-generate and print a root p
 
 ```bash
 cat >> docker-compose.yml <<EOF
-MariaDB:
+mariadb:
  image: recteurlp/mariadb
  ports:
   - "3306:3306"
@@ -32,6 +32,13 @@ MariaDB:
   MYSQL_DATABASE: db
   MYSQL_USER: user
   MYSQL_PASSWORD: password
+EOF
+```
+
+Add Persistance
+
+```
+cat >> docker-compose.yml <<EOF
  volumes:
   - /var/lib/mysql
   - /etc/my.cnf.d
