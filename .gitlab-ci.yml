@@ -2,4 +2,4 @@ Build docker image:
   tags:
    - docker
   script:
-   - make
+   - make release
