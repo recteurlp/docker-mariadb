@@ -3,3 +3,4 @@ Build docker image:
    - docker
   script:
    - make release
+   - docker-clean
