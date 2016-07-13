@@ -1,7 +1,7 @@
 all: build
 
 build:
-	@docker build --rm --tag=recteurlp/mariadb .
+	@docker build --rm --tag=pyrmin.io:5000/recteurlp/mariadb .
 
 release: build
-	@docker build --rm --tag=recteurlp/mariadb:$(shell cat VERSION) .
+	@docker build --rm --tag=pyrmin.io:5000/recteurlp/mariadb:$(shell cat VERSION) .
