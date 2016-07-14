@@ -7,7 +7,7 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 	echo "Done"
 fi
 
-if [ ! "$(f /etc/my.cnf.d/docker.cnf)" ]; then
+if [ ! -f /etc/my.cnf.d/docker.cnf ]; then
 	echo -ne "Populating ConfDir ... "
 	cp /docker.cnf /etc/my.cnf.d/
 	chown -R mysql:mysql /etc/my.cnf.d
