@@ -4,4 +4,4 @@ Build docker image:
   script:
    - make release
    - docker-clean
-   - sudo /usr/bin/docker push pyrmin.io:5000/recteurlp/mariadb:${CI_BUILD_TAG:-latest}
+   - sudo /usr/bin/docker push pyrmin.io:5000/mariadb:${CI_BUILD_TAG:-latest}
