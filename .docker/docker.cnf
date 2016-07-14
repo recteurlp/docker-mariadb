@@ -3,3 +3,4 @@ datadir=/var/lib/mysql
 
 [galera]
 bind-address=0.0.0.0
+# Allow connection from all ip
