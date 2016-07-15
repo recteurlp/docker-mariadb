@@ -23,7 +23,8 @@ fi
 
 echo -ne "Initialize Root password ... "
 /usr/bin/mysqld_safe --log-error=/tmp/init.log --skip-networking --skip-grant-tables &> /dev/null &
-sleep 2
+# Wait for server to Start
+while ! /usr/bin/mysqladmin -u root --password=${MYSQL_ROOT_PASSWORD} status 2>/dev/null; do sleep 1; done
 echo -e "\n\n${MYSQL_ROOT_PASSWORD}\n${MYSQL_ROOT_PASSWORD}\n\n\nn\n\n\n" | mysql_secure_installation &> /dev/null
 echo "Done"
 
@@ -47,6 +48,7 @@ if [[ -n ${MYSQL_USER} && -n ${MYSQL_PASSWORD} ]]; then
 	fi
 
 	mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "$SQL FLUSH PRIVILEGES;"
+	mysql_upgrade -p${MYSQL_ROOT_PASSWORD}
 	echo "Done"
 
 fi
