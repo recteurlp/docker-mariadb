@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Init Volume Datadir
 if [ ! -d /var/lib/mysql/mysql ]; then
 	echo -ne "Populating DataDir ... "
 	mysql_install_db --user=mysql
@@ -15,18 +14,15 @@ if [ ! -f /etc/my.cnf.d/docker.cnf ]; then
 fi
 
 if [[ -z ${MYSQL_ROOT_PASSWORD} ]]; then
-
 	MYSQL_ROOT_PASSWORD=$(pwgen -s -1 12)
 	echo "Your Root password is : ${MYSQL_ROOT_PASSWORD}"
-
 fi
 
-echo -ne "Initialize Root password ... "
+echo "Initializing Root password ... "
 /usr/bin/mysqld_safe --log-error=/tmp/init.log --skip-networking --skip-grant-tables &> /dev/null &
 # Wait for server to Start
 while ! /usr/bin/mysqladmin -u root --password=${MYSQL_ROOT_PASSWORD} status 2>/dev/null; do sleep 1; done
 echo -e "\n\n${MYSQL_ROOT_PASSWORD}\n${MYSQL_ROOT_PASSWORD}\n\n\nn\n\n\n" | mysql_secure_installation &> /dev/null
-echo "Done"
 
 if [[ -n ${MYSQL_DATABASE} ]]; then
 
@@ -37,10 +33,10 @@ fi
 
 if [[ -n ${MYSQL_USER} && -n ${MYSQL_PASSWORD} ]]; then
 
-    MYSQL_USER_HOST=${MYSQL_USER_HOST:-%}
+	MYSQL_USER_HOST=${MYSQL_USER_HOST:-%}
 
 	if [[ -n ${MYSQL_DATABASE} ]]; then
-		echo -ne "GRANT PRIVILEGES on ${MYSQL_DATABASE} to ${MYSQL_USER}@${MYSQL_USER_HOST} ... "
+		echo -ne "GRANT PRIVILEGES on ${MYSQL_DATABASE} to ${MYSQL_USER}@'${MYSQL_USER_HOST}' user ... "
 		SQL="GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* to ${MYSQL_USER}@'${MYSQL_USER_HOST}' identified by '${MYSQL_PASSWORD}';"
 	else
 		echo -ne "Creating ${MYSQL_USER} Database with grant to ${MYSQL_USER}@${MYSQL_USER_HOST} ... "
