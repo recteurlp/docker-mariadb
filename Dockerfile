@@ -1,4 +1,4 @@
-FROM fedora:24
+FROM fedora:25
 MAINTAINER recteurlp recteurlp@gmail.com
 
 COPY .docker/docker.cnf /docker.cnf
