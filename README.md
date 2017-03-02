@@ -1,4 +1,4 @@
-recteurlp/mariadb:10.1.19-6
+recteurlp/mariadb:10.1.21-3
 ===========================
 
 Fedora dockerfile for MariaDB
