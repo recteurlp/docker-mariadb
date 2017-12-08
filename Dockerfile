@@ -12,7 +12,10 @@ RUN dnf -v -y --refresh install \
  hostname \
  mariadb \
  mariadb-server \
- && dnf clean all && rm -rf /usr/share/doc /usr/share/man /tmp/*
+ && dnf clean all \
+ && rm -rf /usr/share/doc /usr/share/man /tmp/* \
+    /etc/my.cnf.d/auth_gssapi.cnf \
+ && sed -i 's:pid-file=/var/run/mariadb/mariadb.pid:pid-file=/run/mysqld/mariadb.pid:' /etc/my.cnf.d/mariadb-server.cnf
 
 EXPOSE 3306
 
