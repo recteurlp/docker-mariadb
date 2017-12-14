@@ -8,3 +8,6 @@ build-proxy:
 
 release: build
 	@docker build --rm --tag=pyrmin.io/mariadb:$(shell cat VERSION) .
+
+goss:
+	@dgoss run pyrmin.io/mariadb

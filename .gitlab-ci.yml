@@ -1,7 +1,22 @@
+stages:
+  - test
+  - build
+
+Docker Goss Tests:
+  stage: test
+  tags:
+    - goss
+  script:
+    - make goss
+
 Build docker image:
+  stage: build
   tags:
    - docker
   script:
    - make release
    - docker-clean
    - docker push pyrmin.io/mariadb:${CI_JOB_TAG:-latest}
+  only:
+    - master
+    - tags

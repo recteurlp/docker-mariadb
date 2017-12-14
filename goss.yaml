@@ -1,0 +1,34 @@
+file:
+  /etc/my.cnf.d/auth_gssapi.cnf:
+    exists: false
+    contains: []
+  /etc/my.cnf.d/docker.cnf:
+    exists: true
+    mode: "0644"
+    size: 95
+    owner: mysql
+    group: mysql
+    filetype: file
+    contains: []
+  /etc/my.cnf.d/mariadb-server.cnf:
+    exists: true
+    mode: "0644"
+    size: 1457
+    owner: mysql
+    group: mysql
+    filetype: file
+    contains: [
+      "[mysqld]",
+      "datadir=/var/lib/mysql",
+      "socket=/var/lib/mysql/mysql.sock",
+      "log-error=/var/log/mariadb/mariadb.log",
+      "pid-file=/run/mysqld/mariadb.pid"
+    ]
+package:
+  mariadb:
+    installed: true
+    versions:
+    - 10.2.9
+process:
+  mysqld:
+    running: true
