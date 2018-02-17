@@ -13,7 +13,7 @@ file:
   /etc/my.cnf.d/mariadb-server.cnf:
     exists: true
     mode: "0644"
-    size: 1457
+    size: 1458
     owner: mysql
     group: mysql
     filetype: file
@@ -22,13 +22,13 @@ file:
       "datadir=/var/lib/mysql",
       "socket=/var/lib/mysql/mysql.sock",
       "log-error=/var/log/mariadb/mariadb.log",
-      "pid-file=/run/mysqld/mariadb.pid"
+      "pid-file=/run/mariadb/mariadb.pid"
     ]
 package:
   mariadb:
     installed: true
     versions:
-    - 10.2.9
+    - 10.2.12
 process:
   mysqld:
     running: true
