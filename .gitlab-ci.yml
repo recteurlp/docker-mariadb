@@ -15,8 +15,8 @@ Build docker image:
    - docker
   script:
    - make release
-   - docker-clean
    - docker push pyrmin.io/mariadb:${CI_JOB_TAG:-latest}
+   - docker-clean
   only:
     - master
     - tags
