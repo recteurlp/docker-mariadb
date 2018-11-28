@@ -28,7 +28,7 @@ package:
   mariadb:
     installed: true
     versions:
-    - 10.2.16
+    - 10.3.9
 process:
   mysqld:
     running: true
